@@ -1,9 +1,12 @@
 -- Server portion
 listener=openListener("$:5000");
 -- Block until a connection is received.  Open the connection
+i = 0 
+while (i < 1) do (
+
 conn=openInOut(listener);
 stdio<<"Connection opened!"<<endl<<flush;
-while (isOpen(conn) and not(atEndOfFile(conn))) do (
+
     stdio<<"Waiting for a command."<<endl<<flush;
     inString=read(conn);
     -- inString has an EOL, but should be a single line.
@@ -17,8 +20,12 @@ while (isOpen(conn) and not(atEndOfFile(conn))) do (
     outString=toString(value(inStringCmd));
     stdio<<"  Cmd evaluated to \""<<outString<<"\". Sending reply."<<endl<<flush;
     conn<<outString<<endl<<flush;
+    stdio<<"Server finished with isOpen="<<isOpen(conn)<<" and atEndOfFile="<<atEndOfFile(conn)<<endl<<flush;
+    close(conn);
+    stdio<<"close conn" << endl<<flush;
+   
 )
-stdio<<"Server finished with isOpen="<<isOpen(conn)<<" and atEndOfFile="<<atEndOfFile(conn)<<endl<<flush;
-close(conn)
-close(listener)
-load "socket_server.m2"
+close(listener);
+stdio<<"close lis" << endl<<flush;
+
+-- load "socket_server.m2"
